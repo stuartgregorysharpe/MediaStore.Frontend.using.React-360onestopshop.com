@@ -23,7 +23,6 @@ export const Login = (payload, navigate) => {
                 },
             });
             console.log(response.headers.cookie, "XXXXXX");
-
             navigate('/');
             toast.success('Successfully joined')
             localStorage.setItem('token', token);
