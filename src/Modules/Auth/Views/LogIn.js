@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Login } from '../Actions/Action';
 import GoogleIcon from '../../../Assets/Icons/google.png';
+import { toast } from 'react-toastify';
 
 const LoginView = () => {
   const dispatch = useDispatch();
   const Result = useSelector((Reducer) => Reducer.Auth);
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setCredentials((prevState) => ({ ...prevState, [name]: value }));
-  };
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(Login(credentials));
-  };
+  function loginHandler(){
+    const data = {
+      email: email,
+      password: password
+    }
+    if(email && password)dispatch(Login(data, navigate));
+    else toast.warn("Password dismatch")
+  }
 
   return (
     <div>
-      {/* {Result.success ? Result.success : <p>error or disable</p>} */}
-
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-20 text-center text-4xl font-bold leading-9 tracking-tight text-red-500">
@@ -44,7 +45,7 @@ const LoginView = () => {
             <hr className="w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">Sign in with your Email</span>
           </div>
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
@@ -53,8 +54,7 @@ const LoginView = () => {
                 <input
                   type="email"
                   name="email"
-                  value={credentials.email}
-                  onChange={handleChange}
+                  onChange={(e)=>{setemail(e.target.value)}}
                   placeholder="Email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -71,9 +71,7 @@ const LoginView = () => {
               <div className="mt-2">
                 <input
                   type="password"
-                  name="password"
-                  value={credentials.password}
-                  onChange={handleChange}
+                  onChange={(e)=>{setpassword(e.target.value)}}
                   placeholder="Password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -101,13 +99,14 @@ const LoginView = () => {
 
             <div>
               <button
-                type="submit"
+                type="button"
+                onClick={loginHandler}
                 className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Log In
               </button>
             </div>
-          </form>
+          </div>
 
           <p className="mt-10 text-left text-sm text-gray-500">
             Don't have an account?{' '}

@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
+const BaseUrl = "http://localhost:3003/api"
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = "LOGIN_FAILURE"
@@ -6,10 +9,11 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = "REGOSTER_FAILURE"
 
 
-export const Login = (credentials) => {
+export const Login = (payload, navigate) => {
+
     return async (dispatch) => {
         try {
-            const response = await axios.post('apiEndpoint/login', credentials);
+            const response = await axios.post(`${BaseUrl}/login`, payload);
             const { user, token } = response.data;
             dispatch({
                 type: LOGIN_SUCCESS,
@@ -18,10 +22,13 @@ export const Login = (credentials) => {
                     token,
                 },
             });
+            console.log(response.headers.cookie, "XXXXXX");
+
+            navigate('/');
+            toast.success('Successfully joined')
             localStorage.setItem('token', token);
-            //   history.push('/home');
         } catch (error) {
-            const errorMessage = error.response ? error.response.data.message : 'Login failed';
+            const errorMessage = error.response ? toast.warn(error.response.data.message) : toast.error('Login failed');
             dispatch({
                 type: LOGIN_FAILURE,
                 payload: {
@@ -32,10 +39,11 @@ export const Login = (credentials) => {
     };
 };
 
-export const Register = (credentials) => {
+export const Register = (payload, navigate) => {
+
     return async (dispatch) => {
         try {
-            const response = await axios.post('apiEndpoint/register', credentials);
+            const response = await axios.post(`${BaseUrl}/register`, payload);
             const { user, token } = response.data;
             dispatch({
                 type: REGISTER_SUCCESS,
@@ -44,10 +52,11 @@ export const Register = (credentials) => {
                     token,
                 },
             });
+            toast.info("Created your account");
             localStorage.setItem('token', token);
-            //   history.push('/home');
+            navigate('/signin');
         } catch (error) {
-            const errorMessage = error.response ? error.response.data.message : 'Register failed';
+            const errorMessage = error.response ? toast.warn(error.response.data.message) : toast.warn("Register failed.");
             dispatch({
                 type: REGISTER_FAILURE,
                 payload: {

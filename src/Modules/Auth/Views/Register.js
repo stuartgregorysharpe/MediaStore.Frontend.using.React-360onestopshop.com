@@ -1,34 +1,42 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Register } from '../Actions/Action';
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from 'react-toastify';
 
 const RegisterView = () => {
   const dispatch = useDispatch();
   const Result = useSelector((Reducer) => Reducer.Auth);
-  const [credentials, setCredentials] = useState({ email: '', password: '', name: '', phoneNumber: '', confirmPassword: '' });
+  const [name, setname] = useState('');
+  const [email, setemail] = useState('');
+  const [phone, setphone] = useState(null);
+  const [password, setpassword] = useState('');
+  const [confirmPassword, setconfirmPassword] = useState('');
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setCredentials((prevState) => ({ ...prevState, [name]: value }));
-  };
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(Register(credentials));
-  };
+  function registerHandler(){
+    const data = {
+      name: name,
+      email: email,
+      phone: phone,
+      password: password
+    }
+    if(password == confirmPassword)dispatch(Register(data, navigate));
+    else toast.warn("Password dismatch")
+  }
 
   return (
     <div>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-20 text-center text-4xl font-bold leading-9 tracking-tight text-red-500">
-            User Registeration
+            User Registration
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-6" >
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Name
@@ -37,8 +45,7 @@ const RegisterView = () => {
                 <input
                   type="text"
                   name="name"
-                  value={credentials.name}
-                  onChange={handleChange}
+                  onChange={(e)=>{setname(e.target.value)}}
                   placeholder="Name"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -52,9 +59,8 @@ const RegisterView = () => {
               <div className="mt-2">
                 <input
                   type="tel"
-                  name="phoneNumber"
-                  value={credentials.phoneNumber}
-                  onChange={handleChange}
+                  name="phone"
+                  onChange={(e)=>{setphone(e.target.value)}}
                   placeholder="Phone Number"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -69,8 +75,7 @@ const RegisterView = () => {
                 <input
                   type="email"
                   name="email"
-                  value={credentials.email}
-                  onChange={handleChange}
+                  onChange={(e)=>{setemail(e.target.value)}}
                   placeholder="Email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -91,8 +96,7 @@ const RegisterView = () => {
                     <input
                       type="password"
                       name="password"
-                      value={credentials.password}
-                      onChange={handleChange}
+                      onChange={(e)=>{setpassword(e.target.value)}}
                       placeholder="Password"
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -109,8 +113,7 @@ const RegisterView = () => {
                     <input
                       type="password"
                       name="confirmPassword"
-                      value={credentials.confirmPassword}
-                      onChange={handleChange}
+                      onChange={(e)=>{setconfirmPassword(e.target.value)}}
                       placeholder="Confirm Password"
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -135,13 +138,13 @@ const RegisterView = () => {
 
             <div>
               <button
-                type="submit"
+                type="button" onClick={registerHandler}
                 className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Register
               </button>
             </div>
-          </form>
+          </div>
 
           <p className="mt-10 text-left text-sm text-gray-500">
             Already have an account?{' '}
