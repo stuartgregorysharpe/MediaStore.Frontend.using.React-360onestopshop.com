@@ -8,6 +8,7 @@ import {
 const initialState = {
   user: null,
   success: false,
+  error: ""
 };
 
 const Reducer = (state = initialState, action) => {
@@ -17,24 +18,28 @@ const Reducer = (state = initialState, action) => {
         ...state,
         user: action.payload.user,
         success: true,
+        error: ""
       };
     case REGISTER_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
         success: true,
+        error: ''
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         user: null,
         success: false,
+        error: ''
       };
     case REGISTER_FAILURE:
       return {
         ...state,
         user: null,
         success: false,
+        error: ''
       };
     default:
       return state;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BaseUrl = "https://three60daysbackend.onrender.com/api"
+const BaseUrl = "http://localhost:3003/api"
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = "LOGIN_FAILURE"
@@ -13,9 +13,6 @@ export const Login = (payload, navigate) => {
 
     return async (dispatch) => {
         try {
-            // const headers = {
-            //     Authorization: `Bearer ${localStorage.getItem('token')}`
-            // };
             const response = await axios.post(`${BaseUrl}/login`, payload);
             dispatch({
                 type: LOGIN_SUCCESS,
@@ -26,12 +23,9 @@ export const Login = (payload, navigate) => {
             toast.success('Successfully joined')
             localStorage.setItem('token', response.data.token);
         } catch (error) {
-            const errorMessage = error.response ? toast.warn(error.response.data.message) : toast.error('Login failed');
+            error.response ? toast.warn(error.response.data.message) : toast.error('Login failed');
             dispatch({
                 type: LOGIN_FAILURE,
-                payload: {
-                    error: errorMessage,
-                },
             });
         }
     };
@@ -42,24 +36,16 @@ export const Register = (payload, navigate) => {
     return async (dispatch) => {
         try {
             const response = await axios.post(`${BaseUrl}/register`, payload);
-            const { user, token } = response.data;
             dispatch({
                 type: REGISTER_SUCCESS,
-                payload: {
-                    user,
-                    token,
-                },
+                payload: response.data
             });
             toast.info("Created your account");
-            localStorage.setItem('token', token);
             navigate('/signin');
         } catch (error) {
-            const errorMessage = error.response ? toast.warn(error.response.data.message) : toast.warn("Register failed.");
+            error.response ? toast.warn(error.response.data.message) : toast.warn("Register failed.");
             dispatch({
                 type: REGISTER_FAILURE,
-                payload: {
-                    error: errorMessage,
-                },
             });
         }
     };
@@ -67,12 +53,12 @@ export const Register = (payload, navigate) => {
 
 
 export const logout = (navigate) => {
+    toast.info('Log out');
+    localStorage.removeItem('token');
     return async (dispatch) => {
         dispatch({
             type: LOGIN_FAILURE
         });
-        toast.info('Log out');
-        localStorage.removeItem('token');
         navigate('/signin');
     }
 }

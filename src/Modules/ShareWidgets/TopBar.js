@@ -4,6 +4,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../Auth/Actions/Action'
+import IconMan from '../../Assets/Icons/man.png'
 
 const navigation = [
     { name: 'Home', to: '/', current: false },
@@ -26,7 +27,7 @@ export default function Example() {
     const dispatch = useDispatch();
     const authState = useSelector((Reducer) => Reducer.Auth.success);
     const navigate = useNavigate();
-    const logout = () => {
+    function logoutHandler () {
         dispatch(logout(navigate));
     }
     
@@ -91,7 +92,7 @@ export default function Example() {
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                src=""
+                                                src={IconMan}
                                                 alt=""
                                             />
                                         </Menu.Button>
@@ -109,7 +110,7 @@ export default function Example() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
-                                                        to=""
+                                                        to="/profile"
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         MyProfile
@@ -129,8 +130,9 @@ export default function Example() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
-                                                    onClick={logout}
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    // to = "/logout"
+                                                    onClick={logoutHandler}
+                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Logout
                                                     </Link>
