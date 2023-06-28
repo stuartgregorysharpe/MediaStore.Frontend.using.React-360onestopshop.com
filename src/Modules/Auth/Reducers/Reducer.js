@@ -7,7 +7,6 @@ import {
 
 const initialState = {
   user: null,
-  error: null,
   success: false,
 };
 
@@ -17,28 +16,24 @@ const Reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.user,
-        error: null,
         success: true,
       };
     case REGISTER_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
-        error: null,
         success: true,
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         user: null,
-        error: action.payload.error,
         success: false,
       };
     case REGISTER_FAILURE:
       return {
         ...state,
         user: null,
-        error: action.payload.error,
         success: false,
       };
     default:

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BaseUrl = "http://localhost:3003/api"
+const BaseUrl = "https://three60daysbackend.onrender.com/api"
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = "LOGIN_FAILURE"
@@ -13,19 +13,18 @@ export const Login = (payload, navigate) => {
 
     return async (dispatch) => {
         try {
+            // const headers = {
+            //     Authorization: `Bearer ${localStorage.getItem('token')}`
+            // };
             const response = await axios.post(`${BaseUrl}/login`, payload);
-            const { user, token } = response.data;
             dispatch({
                 type: LOGIN_SUCCESS,
-                payload: {
-                    user,
-                    token,
-                },
+                payload: response.data
             });
-            console.log(response.headers.cookie, "XXXXXX");
+
             navigate('/');
             toast.success('Successfully joined')
-            localStorage.setItem('token', token);
+            localStorage.setItem('token', response.data.token);
         } catch (error) {
             const errorMessage = error.response ? toast.warn(error.response.data.message) : toast.error('Login failed');
             dispatch({
@@ -65,3 +64,15 @@ export const Register = (payload, navigate) => {
         }
     };
 };
+
+
+export const logout = (navigate) => {
+    return async (dispatch) => {
+        dispatch({
+            type: LOGIN_FAILURE
+        });
+        toast.info('Log out');
+        localStorage.removeItem('token');
+        navigate('/signin');
+    }
+}
