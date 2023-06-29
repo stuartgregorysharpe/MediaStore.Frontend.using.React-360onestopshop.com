@@ -4,6 +4,7 @@ import { LoginView, RegisterView } from './Modules/Auth/Views/Index';
 import { HomeView } from './Modules/Home/Views/Index';
 import { UsersView } from './Modules/Admin/UserManage/Views';
 import { UserProfileView } from './Modules/ShareWidgets/Profile/Views';
+import { ChoosePlanView } from "./Modules/choosePlan/Views";
 
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -32,6 +33,10 @@ const Router = () => {
       <Route path="/signin" element={<LoginView />} />
       <Route path="/signup" element={<RegisterView />} />
       <Route path="/profile" element={<AuthRoute><UserProfileView /></AuthRoute>} />
+      <Route path="/choosePlan" element={<AuthRoute><ChoosePlanView /></AuthRoute>} />
+
+
+      {/* admin routers */}
       <Route path="/admin" element={<AdminRoute><UsersView /></AdminRoute>} />
     </Routes>
   );
