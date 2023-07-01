@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BaseUrl = "http://localhost:3003/api"
+const BaseUrl = "http://localhost:443/api"
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = "LOGIN_FAILURE"
@@ -18,8 +18,7 @@ export const Login = (payload, navigate) => {
                 type: LOGIN_SUCCESS,
                 payload: response.data
             });
-
-            navigate('/');
+            response?.data?.user?.permission === "admin" ? navigate('/amdin') : navigate('/');
             toast.success('Successfully joined')
             localStorage.setItem('token', response.data.token);
         } catch (error) {
