@@ -69,51 +69,45 @@ const getData = () => {
 }
 
 const UsersView = () => {
-    const columns = React.useMemo(() => [
-        {
-          Header: "Name",
-          accessor: 'name',
-          Cell: AvatarCell,
-          imgAccessor: "imgUrl",
-          emailAccessor: "email",
-        },
-        {
-          Header: "Title",
-          accessor: 'title',
-        },
-        {
-          Header: "Status",
-          accessor: 'status',
-          Cell: StatusPill,
-        },
-        {
-          Header: "Age",
-          accessor: 'age',
-        },
-        {
-          Header: "Role",
-          accessor: 'role',
-          Filter: SelectColumnFilter,  // new
-          filter: 'includes',
-        },
-      ], [])
-    
-      const data = React.useMemo(() => getData(), [])
-    return (
-        <div>
-            <div className="min-h-screen bg-gray-100 text-gray-900">
-                <main className="max-w-5xl mx-auto px-4 sm:px-0 lg:px-0 pt-4">
-                    <div className="">
-                        <h1 className="text-2xl font-semibold">Admin Panel</h1>
-                        <h1 className="text-sm text-gray-400 font-semibold">View your team's subscription and plans</h1>
-                    </div>
-                    <div className="mt-6">
-                        <Table columns={columns} data={data} />
-                    </div>
-                </main>
-            </div>
+  const columns = React.useMemo(() => [
+    {
+      Header: "User Info",
+      accessor: 'name',
+      Cell: AvatarCell,
+      imgAccessor: "imgUrl",
+      emailAccessor: "email",
+    },
+    {
+      Header: "Subscription Date",
+      accessor: 'title',
+    },
+    {
+      Header: "Subscription Package",
+      accessor: 'age',
+    },
+    {
+      Header: "Status",
+      accessor: 'status',
+      Cell: StatusPill,
+    },
+    {
+      Header: "",
+      accessor: 'role',
+      Filter: SelectColumnFilter,  // new
+      filter: 'includes',
+    },
+  ], [])
+
+  const data = React.useMemo(() => getData(), [])
+  return (
+    <div>
+      <div className="min-h-screen text-gray-900">
+        <div className="mt-6 pl-5 pr-5 md:pl-40 md:pr-40">
+          <Table columns={columns} data={data} />
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default UsersView;

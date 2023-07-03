@@ -8,7 +8,6 @@ export const LOGIN_FAILURE = "LOGIN_FAILURE"
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = "REGOSTER_FAILURE"
 
-
 export const Login = (payload, navigate) => {
 
     return async (dispatch) => {
@@ -18,7 +17,7 @@ export const Login = (payload, navigate) => {
                 type: LOGIN_SUCCESS,
                 payload: response.data
             });
-            response?.data?.user?.permission === "admin" ? navigate('/amdin') : navigate('/');
+            response?.data?.user?.permission === "admin" ? navigate('/admin') : navigate('/');
             toast.success('Successfully joined')
             localStorage.setItem('token', response.data.token);
         } catch (error) {

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Register } from '../Actions/Action';
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify';
+
+import { Register } from '../Actions/Action';
 
 const RegisterView = () => {
   const dispatch = useDispatch();
@@ -15,15 +16,19 @@ const RegisterView = () => {
 
   const navigate = useNavigate();
 
-  function registerHandler(){
+  function registerHandler() {
     const data = {
       name: name,
       email: email,
       phone: phone,
       password: password
     }
-    if(password == confirmPassword)dispatch(Register(data, navigate));
-    else toast.warn("Password dismatch")
+
+    if(password == confirmPassword) {
+      dispatch(Register(data, navigate));
+    } else {
+      toast.warn("Password dismatch") 
+    }
   }
 
   return (
