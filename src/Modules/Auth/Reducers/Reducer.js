@@ -6,7 +6,7 @@ import {
 } from '../Actions/Action';
 
 const initialState = {
-  user: null,
+  user: {},
   success: false,
   error: ""
 };

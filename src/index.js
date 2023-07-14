@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -10,10 +10,9 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LOGIN_SUCCESS } from './Modules/Auth/Actions/Action';
 
-const BaseUrl = "http://localhost:3003/api";
+const BaseUrl = "http://localhost:443/api";
 
 const InitApp = () => {
-  
   const dispatch = useDispatch();
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,7 +25,7 @@ const InitApp = () => {
         if (response.data.status === "success") {
           dispatch({
             type: LOGIN_SUCCESS,
-            payload: response.data,
+            payload: response.data.data,
           });
           toast.info(response.data.message);
         }
@@ -50,14 +49,11 @@ const InitApp = () => {
   );
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
   <Provider store={store}>
     <InitApp />
-  </Provider>
+  </Provider>,
+  document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

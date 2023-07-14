@@ -1,4 +1,6 @@
-import { Fragment, useState } from 'react'
+import React from 'react'
+import jwt_decode from "jwt-decode"
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from "react-router-dom"
@@ -22,17 +24,28 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function TopBar() {
 
     const dispatch = useDispatch();
-    const authState = useSelector((Reducer) => Reducer.Auth.success);
+    const [customPermission, setCustomPermission] = React.useState('');
+    const [avatar, setAvatar] = React.useState(null);
+    const authState = useSelector((Reducer) => Reducer.Auth);
     const navigate = useNavigate();
-    function logoutHandler () {
+    function logoutHandler() {
         dispatch(logout(navigate));
     }
-    
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            setCustomPermission(decodedToken.permission);
+        }
+        setAvatar(authState.user.photourl);
+    }, [])
+console.log(avatar)
     return (
-        <Disclosure as="nav" className="">
+        <Disclosure as="nav" className="bg-violet-800">
             {({ open }) => (
                 <>
                     <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -50,21 +63,23 @@ export default function Example() {
                             </div>
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex space-x-4">
-                                        {navigation.map((item) => (
-                                            <Link
-                                                key={item.name}
-                                                to={item.to}
-                                                className={classNames(
-                                                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                    'rounded-md px-3 py-2 text-sm font-medium'
-                                                )}
-                                                aria-current={item.current ? 'page' : undefined}
-                                            >
-                                                {item.name}
-                                            </Link>
-                                        ))}
-                                    </div>
+                                    {
+                                        customPermission === "customer" && <div className="flex space-x-4">
+                                            {navigation.map((item) => (
+                                                <Link
+                                                    key={item.name}
+                                                    to={item.to}
+                                                    className={classNames(
+                                                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                        'rounded-md px-3 py-2 text-sm font-medium'
+                                                    )}
+                                                    aria-current={item.current ? 'page' : undefined}
+                                                >
+                                                    {item.name}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -77,7 +92,7 @@ export default function Example() {
                                 </button> */}
 
                                 {/* Profile dropdown */}
-                                {!authState && <Menu as="div" className="relative ml-3">
+                                {!authState.success && <Menu as="div" className="relative ml-3">
                                     <div>
                                         <Menu.Button>
                                             <Link to="/signin" className="bg-red-600 hover:bg-red-400 text-white py-1.5 px-4 rounded-full">
@@ -86,13 +101,13 @@ export default function Example() {
                                         </Menu.Button>
                                     </div>
                                 </Menu>}
-                                {authState && <Menu as="div" className="relative ml-3">
+                                {authState.success && <Menu as="div" className="relative ml-3">
                                     <div>
                                         <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                src={IconMan}
+                                                src={avatar ? `http://localhost:443/asset${avatar}` : IconMan}
                                                 alt=""
                                             />
                                         </Menu.Button>
@@ -130,9 +145,9 @@ export default function Example() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
-                                                    // to = "/logout"
-                                                    onClick={logoutHandler}
-                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        // to = "/logout"
+                                                        onClick={logoutHandler}
+                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Logout
                                                     </Link>

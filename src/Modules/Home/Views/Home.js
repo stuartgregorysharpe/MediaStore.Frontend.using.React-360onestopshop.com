@@ -7,7 +7,7 @@ import TopBar from "../../ShareWidgets/TopBar";
 const View = () => {
   const dispatch = useDispatch();
   return (
-    <div className='bg-violet-950'>
+    <div className='bg-violet-900'>
       <TopBar />
       <div className="sm:mx-auto sm:w-full sm:max-w-sm py-5">
         <div className="relative flex">
@@ -43,6 +43,7 @@ const View = () => {
       </div>
 
       <div>
+
       </div>
 
     </div>

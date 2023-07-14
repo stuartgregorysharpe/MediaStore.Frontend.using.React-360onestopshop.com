@@ -50,13 +50,13 @@ export const Register = (payload, navigate) => {
 };
 
 
-export const logout = (navigate) => {
+export const logout = async(history) => {
     toast.info('Log out');
     localStorage.removeItem('token');
-    return async (dispatch) => {
-        dispatch({
-            type: LOGIN_FAILURE
-        });
-        navigate('/signin');
-    }
+    await history.push('/signin');
+    // return (dispatch) => {
+    //     dispatch({
+    //         type: LOGIN_FAILURE
+    //     });
+    // }
 }

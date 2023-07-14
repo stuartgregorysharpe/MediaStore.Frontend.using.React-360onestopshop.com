@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useHistory } from "react-router-dom"
 import { Login } from '../Actions/Action';
 import GoogleIcon from '../../../Assets/Icons/google.png';
 import { toast } from 'react-toastify';
 
 const LoginView = () => {
   const dispatch = useDispatch();
-  const Result = useSelector((Reducer) => Reducer.Auth);
+  const Result = useSelector((state) => state.Auth);
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
 
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   function loginHandler(){
     const data = {
