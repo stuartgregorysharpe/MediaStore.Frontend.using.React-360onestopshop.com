@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { useNavigate, Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import jwt_decode from "jwt-decode";
 import $ from "jquery"
 import { toast } from 'react-toastify';
 
-import IconMan from '../../../../Assets/Icons/woman.png'
+import IconMan from '../../../../Assets/Icons/man.png'
 import TopBar from "../../TopBar";
 import { saveUserProfile } from "../Actions/userProfileAction";
 
@@ -18,15 +18,24 @@ const UserProfileView = () => {
 
     const userData = useSelector((state) => state?.Auth?.user)
 
-    const [name, setName] = useState(userData?.name);
-    const [email, setEmail] = useState(userData?.email);
-    const [permission, setPermission] = useState(userData?.permission);
-    const [country, setCountry] = useState(userData?.country);
-    const [timezone, setTimezone] = useState(userData?.timezone);
-    const [bio, setBio] = useState(userData?.bio);
-    const [photoUrl, setPhotoUrl] = useState(userData?.photourl);
-
-    const [previewImage, setPreviewImage] = useState(null);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [permission, setPermission] = useState("");
+    const [country, setCountry] = useState("");
+    const [timezone, setTimezone] = useState("");
+    const [bio, setBio] = useState("");
+    const [photoUrl, setPhotoUrl] = useState("");
+    const [previewImage, setPreviewImage] = useState(IconMan);
+    
+    useEffect(() => {
+        setName(userData?.name || ""); 
+        setEmail(userData?.email || "");
+        setPermission(userData?.permission || "");
+        setCountry(userData?.country || "");
+        setTimezone(userData?.timezone || "");
+        setBio(userData?.bio || "");
+        setPhotoUrl(userData?.photoUrl || "");
+    }, []);
 
     const handleSelectImage = (event) => {
         const file = event.target.files[0];
@@ -47,7 +56,7 @@ const UserProfileView = () => {
 
         const image = $('#file-upload').prop('files')[0] ? $('#file-upload').prop('files')[0] : "";
 
-        if (_id && name && email && permission && country && timezone && bio) {
+        if (_id && name && email && permission) {
             const data = new FormData();
             data.append("_id", _id);
             data.append("name", name);
@@ -57,6 +66,7 @@ const UserProfileView = () => {
             data.append("timezone", timezone);
             data.append("bio", bio);
             data.append("photo", image);
+            // image ? data.append("photo", image) : data.append("photo", IconMan);
             console.log(data, "image upload data testing");
             dispatch(saveUserProfile(data, navigate));
         } else {
@@ -203,7 +213,7 @@ const UserProfileView = () => {
                             <div className="col-span-2 flex">
                                 <img
                                     className="h-20 w-20 rounded-full border border-gray-500 mb-4 sm:mb-0 mr-3 mt-12"
-                                    src={previewImage ? previewImage : IconMan}
+                                    src={previewImage ? previewImage : `http://localhost:443/asset${photoUrl}`}
                                     alt=""
                                 />
                                 <div className="mt-2 flex w-full justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">

@@ -43,6 +43,8 @@ const View = () => {
       </div>
 
       <div>
+      <iframe width="640" height="360" frameborder="0" src="https://mega.nz/embed/B3UHFRab#yj_l2exzDt0XxNklCHxwUwJVOVYLCTu8gg_dWiIGDTI" allowfullscreen ></iframe>
+    <video src='https://mega.nz/embed/B3UHFRab#yj_l2exzDt0XxNklCHxwUwJVOVYLCTu8gg_dWiIGDTI'></video>
 
       </div>
 

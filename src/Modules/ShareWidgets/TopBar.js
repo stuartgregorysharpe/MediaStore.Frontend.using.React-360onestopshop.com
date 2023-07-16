@@ -3,10 +3,13 @@ import jwt_decode from "jwt-decode"
 import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, Navigate } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../Auth/Actions/Action'
 import IconMan from '../../Assets/Icons/man.png'
+import GmailIcon from '../../Assets/Icons/google.png'
+import { toast } from 'react-toastify'
+import { googleLogout } from '@react-oauth/google';
 
 const navigation = [
     { name: 'Home', to: '/', current: false },
@@ -31,19 +34,29 @@ export default function TopBar() {
     const [avatar, setAvatar] = React.useState(null);
     const authState = useSelector((Reducer) => Reducer.Auth);
     const navigate = useNavigate();
-    function logoutHandler() {
-        dispatch(logout(navigate));
-    }
 
+    const logoutHandler = async() => {
+        try {
+            googleLogout();
+            toast.info('Log out');
+            localStorage.removeItem('token');
+            navigate('/signin');
+            // dispatch(logout(navigate));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             const decodedToken = jwt_decode(token);
             setCustomPermission(decodedToken.permission);
         }
-        setAvatar(authState.user.photourl);
+        console.log(authState.user.from)
+        authState.user.from === "local" ? setAvatar(authState.user.photourl?`http://localhost:443/asset${authState.user.photourl}`:IconMan) : setAvatar(GmailIcon);
     }, [])
-console.log(avatar)
+
     return (
         <Disclosure as="nav" className="bg-violet-800">
             {({ open }) => (
@@ -103,13 +116,14 @@ console.log(avatar)
                                 </Menu>}
                                 {authState.success && <Menu as="div" className="relative ml-3">
                                     <div>
-                                        <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800">
+                                        <Menu.Button className="flex rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                src={avatar ? `http://localhost:443/asset${avatar}` : IconMan}
+                                                src={avatar ? avatar : ""}
                                                 alt=""
                                             />
+                                            <p className='pt-1.5 pl-2 pr-3'>{authState.user.name}</p>
                                         </Menu.Button>
                                     </div>
                                     <Transition
@@ -132,7 +146,7 @@ console.log(avatar)
                                                     </Link>
                                                 )}
                                             </Menu.Item>
-                                            <Menu.Item>
+                                            {/* <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
                                                         to=""
@@ -141,16 +155,16 @@ console.log(avatar)
                                                         Settings
                                                     </Link>
                                                 )}
-                                            </Menu.Item>
+                                            </Menu.Item> */}
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <Link
-                                                        // to = "/logout"
+                                                    <a
+                                                        href = "/signin"
                                                         onClick={logoutHandler}
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Logout
-                                                    </Link>
+                                                    </a>
                                                 )}
                                             </Menu.Item>
                                         </Menu.Items>

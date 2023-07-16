@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useHistory } from "react-router-dom"
-import { Login } from '../Actions/Action';
+import { Link, useNavigate } from "react-router-dom"
+import { Login, googleBackendLogin } from '../Actions/Action';
 import GoogleIcon from '../../../Assets/Icons/google.png';
 import { toast } from 'react-toastify';
+import { useGoogleLogin, googleLogout  } from '@react-oauth/google';
+import axios from 'axios';
 
 const LoginView = () => {
   const dispatch = useDispatch();
@@ -11,7 +13,7 @@ const LoginView = () => {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
 
-  const navigate = useHistory();
+  const navigate = useNavigate();
 
   function loginHandler(){
     const data = {
@@ -21,6 +23,26 @@ const LoginView = () => {
     if(email && password)dispatch(Login(data, navigate));
     else toast.warn("Password dismatch")
   }
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async response => {
+      try {
+        const googledata = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", { headers: { "Authorization": `Bearer ${response.access_token}` } });
+        if(googledata.status === 200){
+          console.log(googledata.data)
+          const data = {
+            email : googledata.data.email,
+            name : googledata.data.name,
+            photoUrl: googledata.data.picture,
+          }
+          console.log(data)
+          dispatch(googleBackendLogin(data, navigate));
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  });
 
   return (
     <div>
@@ -35,6 +57,7 @@ const LoginView = () => {
           <div>
             <button
               type="submit"
+              onClick={googleLogin}
               className="flex w-full justify-center rounded-md bg-transparent px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 font-bold hover:bg-gray-100 border border-gray-400"
             >
               <img src={GoogleIcon} alt="" className='px-2' />
@@ -90,7 +113,7 @@ const LoginView = () => {
                   </label>
                 </div>
                 <div className="text-sm">
-                  <Link to="" className="font-semibold text-red-500 hover:text-indigo-500">
+                  <Link to="/forgotpassword" className="font-semibold text-red-500 hover:text-indigo-500">
                     Forgot password?
                   </Link>
                 </div>
