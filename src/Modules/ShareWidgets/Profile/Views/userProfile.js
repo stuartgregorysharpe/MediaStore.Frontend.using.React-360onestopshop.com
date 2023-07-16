@@ -67,7 +67,6 @@ const UserProfileView = () => {
             data.append("bio", bio);
             data.append("photo", image);
             // image ? data.append("photo", image) : data.append("photo", IconMan);
-            console.log(data, "image upload data testing");
             dispatch(saveUserProfile(data, navigate));
         } else {
             toast.warning("Plese fill reqired fields")

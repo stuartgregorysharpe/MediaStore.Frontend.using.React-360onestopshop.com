@@ -6,6 +6,7 @@ import { UsersView } from './Modules/Admin/UserManage/Views';
 import { UserProfileView } from './Modules/ShareWidgets/Profile/Views';
 import { ChoosePlanView } from "./Modules/choosePlan/Views";
 import ForgotPasswordView from "./Modules/Auth/Views/Forgot";
+import { CloudStorage } from "./Modules/Admin/CloudStorage/Views";
 
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -33,9 +34,10 @@ const Router = () => {
       <Route path="/" element={<HomeView />} />
       <Route path="/signin" element={<LoginView />} />
       <Route path="/signup" element={<RegisterView />} />
-      <Route path="/forgotpassword" element={<ForgotPasswordView />} />
+      <Route path="/forgot-password" element={<ForgotPasswordView />} />
       <Route path="/profile" element={<AuthRoute><UserProfileView /></AuthRoute>} />
-      <Route path="/choosePlan" element={<AuthRoute><ChoosePlanView /></AuthRoute>} />
+      <Route path="/choose-plan" element={<AuthRoute><ChoosePlanView /></AuthRoute>} />
+      <Route path="/cloud-storage" element={<AuthRoute><CloudStorage /></AuthRoute>} />
 
 
       {/* admin routers */}

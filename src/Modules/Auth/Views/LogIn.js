@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom"
 import { Login, googleBackendLogin } from '../Actions/Action';
 import GoogleIcon from '../../../Assets/Icons/google.png';
 import { toast } from 'react-toastify';
-import { useGoogleLogin, googleLogout  } from '@react-oauth/google';
+import { useGoogleLogin, googleLogout } from '@react-oauth/google';
 import axios from 'axios';
-
+import { File } from 'megajs'
+import { useEffect } from "react";
 const LoginView = () => {
+
   const dispatch = useDispatch();
   const Result = useSelector((state) => state.Auth);
   const [email, setemail] = useState('');
@@ -15,12 +17,12 @@ const LoginView = () => {
 
   const navigate = useNavigate();
 
-  function loginHandler(){
+  function loginHandler() {
     const data = {
       email: email,
       password: password
     }
-    if(email && password)dispatch(Login(data, navigate));
+    if (email && password) dispatch(Login(data, navigate));
     else toast.warn("Password dismatch")
   }
 
@@ -28,18 +30,15 @@ const LoginView = () => {
     onSuccess: async response => {
       try {
         const googledata = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", { headers: { "Authorization": `Bearer ${response.access_token}` } });
-        if(googledata.status === 200){
-          console.log(googledata.data)
+        if (googledata.status === 200) {
           const data = {
-            email : googledata.data.email,
-            name : googledata.data.name,
+            email: googledata.data.email,
+            name: googledata.data.name,
             photoUrl: googledata.data.picture,
           }
-          console.log(data)
           dispatch(googleBackendLogin(data, navigate));
         }
       } catch (err) {
-        console.log(err)
       }
     }
   });
@@ -77,7 +76,7 @@ const LoginView = () => {
                 <input
                   type="email"
                   name="email"
-                  onChange={(e)=>{setemail(e.target.value)}}
+                  onChange={(e) => { setemail(e.target.value) }}
                   placeholder="Email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -94,7 +93,8 @@ const LoginView = () => {
               <div className="mt-2">
                 <input
                   type="password"
-                  onChange={(e)=>{setpassword(e.target.value)}}
+                  onChange={(e) => { setpassword(e.target.value) }}
+                  onKeyDown={(e) => { if (e.key === 'Enter') loginHandler() }}
                   placeholder="Password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -113,7 +113,7 @@ const LoginView = () => {
                   </label>
                 </div>
                 <div className="text-sm">
-                  <Link to="/forgotpassword" className="font-semibold text-red-500 hover:text-indigo-500">
+                  <Link to="/forgot-password" className="font-semibold text-red-500 hover:text-indigo-500">
                     Forgot password?
                   </Link>
                 </div>

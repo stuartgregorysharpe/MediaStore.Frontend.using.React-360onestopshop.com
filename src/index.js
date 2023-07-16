@@ -38,7 +38,6 @@ const InitApp = () => {
           localStorage.removeItem("token");
         }
       } catch (error) {
-        console.error("Error refreshing token:", error);
       }
     };
 

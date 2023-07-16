@@ -6,7 +6,6 @@ const BaseUrl = "http://localhost:443/api"
 
 
 export const saveUserProfile = (payload) => {
-    console.log(payload, "payload tesitng")
 
     return async () => {
         try {

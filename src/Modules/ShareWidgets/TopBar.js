@@ -35,7 +35,7 @@ export default function TopBar() {
     const authState = useSelector((Reducer) => Reducer.Auth);
     const navigate = useNavigate();
 
-    const logoutHandler = async() => {
+    const logoutHandler = async () => {
         try {
             googleLogout();
             toast.info('Log out');
@@ -43,18 +43,16 @@ export default function TopBar() {
             navigate('/signin');
             // dispatch(logout(navigate));
         } catch (error) {
-            console.error(error);
         }
     }
-    
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             const decodedToken = jwt_decode(token);
             setCustomPermission(decodedToken.permission);
         }
-        console.log(authState.user.from)
-        authState.user.from === "local" ? setAvatar(authState.user.photourl?`http://localhost:443/asset${authState.user.photourl}`:IconMan) : setAvatar(GmailIcon);
+        authState.user.from === "local" ? setAvatar(authState.user.photourl ? `http://localhost:443/asset${authState.user.photourl}` : IconMan) : setAvatar(GmailIcon);
     }, [])
 
     return (
@@ -116,7 +114,7 @@ export default function TopBar() {
                                 </Menu>}
                                 {authState.success && <Menu as="div" className="relative ml-3">
                                     <div>
-                                        <Menu.Button className="flex rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800">
+                                        <Menu.Button className="flex rounded-full ring-4 ring-indigo-600 bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
@@ -159,7 +157,7 @@ export default function TopBar() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <a
-                                                        href = "/signin"
+                                                        href="/signin"
                                                         onClick={logoutHandler}
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
@@ -175,22 +173,24 @@ export default function TopBar() {
                     </div>
 
                     <Disclosure.Panel className="sm:hidden">
-                        <div className="space-y-1 px-2 pb-3 pt-2">
-                            {navigation.map((item) => (
-                                <Disclosure.Button
-                                    key={item.name}
-                                    as="a"
-                                    to={item.to}
-                                    className={classNames(
-                                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                        'block rounded-md px-3 py-2 text-base font-medium'
-                                    )}
-                                    aria-current={item.current ? 'page' : undefined}
-                                >
-                                    {item.name}
-                                </Disclosure.Button>
-                            ))}
-                        </div>
+                        {
+                            authState.user.permission === "customer" && <div className="space-y-1 px-2 pb-3 pt-2">
+                                {navigation.map((item) => (
+                                    <Disclosure.Button
+                                        key={item.name}
+                                        as="a"
+                                        to={item.to}
+                                        className={classNames(
+                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                            'block rounded-md px-3 py-2 text-base font-medium'
+                                        )}
+                                        aria-current={item.current ? 'page' : undefined}
+                                    >
+                                        {item.name}
+                                    </Disclosure.Button>
+                                ))}
+                            </div>
+                        }
                     </Disclosure.Panel>
                 </>
             )}
