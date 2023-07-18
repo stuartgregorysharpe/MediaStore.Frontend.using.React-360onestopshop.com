@@ -23,7 +23,7 @@ const Sidebar = () => {
     const isOpen = isButtonToggled || isHoverOpen; // Sidebar is open if the button has been clicked or the mouse is hovering over the sidebar
 
     return (
-        <div ref={sidebarRef} className={`max-h-full bg-violet-800 text-white space-y-6 py-7 absolute inset-y-0 left-0 transform transition-all duration-500 ease-in-out overflow-x-hidden h-screen z-50 ${isOpen ? 'translate-x-0 w-64' : 'translate-x-0 w-16'}`}>
+        <div ref={sidebarRef} className={`max-h-full bg-violet-800 text-white space-y-6 py-7 absolute inset-y-0 left-0 transform transition-all duration-200 ease-in-out overflow-x-hidden h-screen z-50 ${isOpen ? 'translate-x-0 w-64' : 'translate-x-0 w-16'}`}>
             <div className="flex items-center justify-between">
                 <h2 className={`text-2xl md:pl-4 pl-4 font-extrabold ${isOpen ? 'inline' : 'hidden'}`}>Admin Panel</h2>
                 <button onClick={() => setIsButtonToggled(!isButtonToggled)} className='md:pr-5 pl-4 pr-5'>

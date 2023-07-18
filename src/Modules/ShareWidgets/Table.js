@@ -1,26 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
-const PaginationButton = ({ page, currentPage, onClick }) => (
+const PaginationButton = ({ icon, onClick, disabled }) => (
   <button
-    className={`h-10 px-2 m-1 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-gray-200 ${currentPage === page && "bg-gray-200"}`}
-    onClick={() => onClick(page)}
+    className={`h-10 px-2 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800 ${disabled && "opacity-50 cursor-not-allowed"}`}
+    onClick={onClick}
+    disabled={disabled}
   >
-    {page}
+    {icon}
   </button>
 );
 
 const Table = ({ data, columns, itemsPerPage = 10 }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [inputPage, setInputPage] = useState(1);
   const totalPages = Math.ceil(data.length / itemsPerPage);
-
-  const handleClick = (page) => {
-    setCurrentPage(page);
-  };
 
   const startIndex = itemsPerPage * (currentPage - 1);
   const endIndex = startIndex + itemsPerPage;
   const currentItems = data.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    setInputPage(currentPage);
+  }, [currentPage]);
+
+  const handleChange = (event) => {
+    setInputPage(event.target.value);
+  };
+
+  const handleGoClick = () => {
+    const page = Number(inputPage);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    } else {
+      setInputPage(currentPage);
+    }
+  };
 
   return (
     <div>
@@ -45,42 +60,40 @@ const Table = ({ data, columns, itemsPerPage = 10 }) => {
       <div className="py-3 md:flex items-center justify-between">
         <p className='pb-5'>Page {currentPage} of total {totalPages} pages</p>
         <div>
-          <button
-            className={`h-10 px-2 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800 ${currentPage === 1 && "opacity-50 cursor-not-allowed"}`}
-            onClick={() => handleClick(1)}
+          <PaginationButton
+            icon={<FaAngleDoubleLeft />}
+            onClick={() => setCurrentPage(1)}
             disabled={currentPage === 1}
-          >
-            <FaAngleDoubleLeft />
-          </button>
-          <button
-            className={`h-10 px-2 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800 ${currentPage === 1 && "opacity-50 cursor-not-allowed"}`}
-            onClick={() => handleClick(currentPage - 1)}
+          />
+          <PaginationButton
+            icon={<FaAngleLeft />}
+            onClick={() => setCurrentPage((old) => Math.max(1, old - 1))}
             disabled={currentPage === 1}
-          >
-            <FaAngleLeft />
-          </button>
-          {[...Array(totalPages)].map((_, index) => (
-            <PaginationButton
-              key={index}
-              page={index + 1}
-              currentPage={currentPage}
-              onClick={handleClick}
-            />
-          ))}
+          />
+          <input
+            className="h-10 px-2 m-2 transition-colors duration-150 rounded-lg focus:shadow-outline"
+            type="number"
+            min={1}
+            max={totalPages}
+            value={inputPage}
+            onChange={handleChange}
+          />
           <button
-            className={`h-10 px-2 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800 ${currentPage === totalPages && "opacity-50 cursor-not-allowed"}`}
-            onClick={() => handleClick(currentPage + 1)}
-            disabled={currentPage === totalPages}
+            className="h-10 px-2 m-2 transition-colors duration-150 bg-gray-500 rounded-lg focus:shadow-outline hover:bg-gray-700"
+            onClick={handleGoClick}
           >
-            <FaAngleRight />
+            Go
           </button>
-          <button
-            className={`h-10 px-2 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800 ${currentPage === totalPages && "opacity-50 cursor-not-allowed"}`}
-            onClick={() => handleClick(totalPages)}
+          <PaginationButton
+            icon={<FaAngleRight />}
+            onClick={() => setCurrentPage((old) => Math.min(totalPages, old + 1))}
             disabled={currentPage === totalPages}
-          >
-            <FaAngleDoubleRight />
-          </button>
+          />
+          <PaginationButton
+            icon={<FaAngleDoubleRight />}
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages}
+          />
         </div>
       </div>
     </div>
@@ -88,8 +101,3 @@ const Table = ({ data, columns, itemsPerPage = 10 }) => {
 };
 
 export default Table;
-
-
-
-
-

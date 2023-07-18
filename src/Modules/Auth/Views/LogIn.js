@@ -6,8 +6,6 @@ import GoogleIcon from '../../../Assets/Icons/google.png';
 import { toast } from 'react-toastify';
 import { useGoogleLogin, googleLogout } from '@react-oauth/google';
 import axios from 'axios';
-import { File } from 'megajs'
-import { useEffect } from "react";
 const LoginView = () => {
 
   const dispatch = useDispatch();
