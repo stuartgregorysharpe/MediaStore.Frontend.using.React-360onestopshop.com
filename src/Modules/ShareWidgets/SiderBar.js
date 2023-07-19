@@ -39,11 +39,11 @@ const Sidebar = () => {
                     </svg>
                     <span className={`ml-4 ${isOpen ? 'inline' : 'hidden'}`}>User Management</span>
                 </Link>
-                <Link to="/users" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 flex items-center">
+                <Link to="/homepagedetailmanage" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v2H2v-2h5m5-14a5 5 0 110 10a5 5 0 010-10zm12 14a2 2 0 10-4 0v1h4v-1z" />
                     </svg>
-                    <span className={`ml-4 ${isOpen ? 'inline' : 'hidden'}`}>Users</span>
+                    <span className={`ml-4 ${isOpen ? 'inline' : 'hidden'}`}>HomePageDetailTiltle</span>
                 </Link>
                 <Link to="/cloud-storage" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">

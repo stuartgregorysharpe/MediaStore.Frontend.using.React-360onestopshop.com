@@ -294,6 +294,10 @@ export default function MegaNZView() {
                 {editModal()}
                 <div className="md:p-20 pl-20 pt-10 pr-5">
                     <div className="">
+                        <div className="pb-5">
+                            <h1 className="text-2xl font-semibold">Third party Panel</h1>
+                            <h1 className="text-sm text-gray-400 font-semibold">Manage backend stored files from mega.nz</h1>
+                        </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 Paste Link here from Mega.nz

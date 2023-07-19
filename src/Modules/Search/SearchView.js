@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import TopBar from "../../ShareWidgets/TopBar";
+import TopBar from "../ShareWidgets/TopBar";
 import { PaperClipIcon, MusicalNoteIcon, VideoCameraIcon, ArrowDownTrayIcon, StarIcon, PencilSquareIcon, TrashIcon, ChevronDoubleRightIcon } from '@heroicons/react/20/solid'
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
-import { Fragment, useRef } from 'react'
 import { File } from 'megajs'
-import { getMegaList } from '../../Admin/CloudStorage/Actions/action';
 import "./animation.css"
 import { saveAs } from 'file-saver';
 import { toast } from 'react-toastify';
 import Modal from 'react-modal';
-import { getHome, searchaction } from '../Actions/HomeAction';
-import { searchAlphabeta, searchPopularity, searchRecent, searchVolume } from '../../Filtering/FilteringAction';
+import { searchaction } from './SearchAction.';
 
 Modal.setAppElement('#root');
 
@@ -24,102 +21,28 @@ const View = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
-  const itemsPerPage = 11;
+  const itemsPerPage = 20;
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animation, setAnimation] = useState("slideInFromRight");
 
-  const [fileType, setFileType] = useState('');
-  const [fileSrc, setFileSrc] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [search, setSearch] = useState(null);
 
-  const firstTitleOne = useSelector(state => state.Home.HomeList?.firstTitleOne);
-  const secondTitleOne = useSelector(state => state.Home.HomeList?.secondTitleOne);
-  const thirdTitleOne = useSelector(state => state.Home.HomeList?.thirdTitleOne);
+  const searchList = useSelector(state => state.Search.searchList);
 
-  const firstTitleTwo = useSelector(state => state.Home.HomeList?.firstTitleTwo);
-  const secondTitleTwo = useSelector(state => state.Home.HomeList?.secondTitleTwo);
-  const thirdTitleTwo = useSelector(state => state.Home.HomeList?.thirdTitleTwo);
+//   const [megaList, setMegaList] = useState([]);
 
-  const forthTitle = useSelector(state => state.Home.HomeList?.forthTitle);
-
-  const totalAssets = useSelector(state => state.Home.HomeList?.totalAssets);
-  const totalDownloads = useSelector(state => state.Home.HomeList?.totalDownloads);
-  const todayViews = useSelector(state => state.Home.HomeList?.todayViews);
-  const todayDownloads = useSelector(state => state.Home.HomeList?.todayDownloads);
-
-  const totalAssetsNumber = useSelector(state => state.Home.HomeList?.totalAssetsNumber);
-  const totalDownloadsNumber = useSelector(state => state.Home.HomeList?.totalDownloadsNumber);
-  const todayViewsNumber = useSelector(state => state.Home.HomeList?.todayViewsNumber);
-  const todayDownloadsNumber = useSelector(state => state.Home.HomeList?.todayDownloadsNumber);
-
-  const megaListFromStore = useSelector(state => state.Mega.megaList);
-
-  const slides = [
-    {
-      title: firstTitleOne,
-      messages: [
-        secondTitleOne,
-        thirdTitleOne,
-      ]
-    },
-    {
-      title: firstTitleTwo,
-      messages: [
-        secondTitleTwo,
-        thirdTitleTwo,
-      ]
-    }
-  ];
-
-  const stats = [
-    { name: totalAssets, value: totalAssetsNumber },
-    { name: totalDownloads, value: totalDownloadsNumber },
-    { name: todayViews, value: todayViewsNumber },
-    { name: todayDownloads, value: todayDownloadsNumber },
-  ]
-
-  useEffect(() => {
-    dispatch(getHome());
-  }, []);
-
-
-  // Initiate megaList with the value from the store
-  const [megaList, setMegaList] = useState([]);
-
-  useEffect(() => {
-    // Define an async function that will load the data
-    const loadMegaList = async () => {
-      // Wait for the getMegaList action to finish and get the data
-      const result = await dispatch(getMegaList());
-
-      // Now you can safely set the state
-      setMegaList(result);
-    };
-    // Invoke the function
-    loadMegaList();
-  }, [dispatch]); // Dependency array
-
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimation(currentSlide % 2 === 0 ? "slideOutToLeft" : "slideOutToRight");
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, [currentSlide]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCurrentSlide((currentSlide + 1) % slides.length);
-      setAnimation((currentSlide + 1) % 2 === 0 ? "slideInFromRight" : "slideInFromLeft");
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, [currentSlide, animation]);
+//   useEffect(() => {
+//     const loadMegaList = async () => {
+//       const result = await dispatch(getMegaList());
+//       setMegaList(result);
+//     };
+//     loadMegaList();
+//   }, [dispatch]); // Dependency array
 
   useEffect(() => {
     setInputPage(currentPage);
@@ -156,11 +79,11 @@ const View = () => {
     </button>
   );
 
-  const totalPages = Math.ceil(megaList?.length / itemsPerPage);
+  const totalPages = Math.ceil(searchList?.length / itemsPerPage);
 
   const startIndex = itemsPerPage * (currentPage - 1);
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = megaList?.slice(startIndex, endIndex);
+  const currentItems = searchList?.slice(startIndex, endIndex);
 
 
   const download = async (link) => {
@@ -244,22 +167,10 @@ const View = () => {
       search: "name",
       subname: search
     }
+
     dispatch(searchaction(data, navigate));
-  }
 
-  const filterByAlphabet = () => {
-    dispatch(searchAlphabeta(navigate));
   }
-  const filterByPopularity = () => {
-    dispatch(searchPopularity(navigate));
-  }
-  const filterByRecent = () => {
-    dispatch(searchRecent(navigate));
-  }
-  const filterByVolume = () => {
-    dispatch(searchVolume(navigate));
-  }
-
 
   const closeModal = () => {
     setIsOpen(false);
@@ -303,7 +214,7 @@ const View = () => {
               className="block w-full rounded-full border-0 py-1.5 pl-7 pr-10 bg-gray-900 text-gray-400 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Search"
             />
-            <div className="bg-purple-800 rounded-full absolute inset-y-0 right-0 flex items-center pr-1.5 mt-1 mb-1 mr-1" onClick={()=>searchHandler()} >
+            <div className="bg-purple-800 rounded-full absolute inset-y-0 right-0 flex items-center pr-1.5 mt-1 mb-1 mr-1" >
               <svg
                 className="w-5 h-5 text-white"
                 fill="none"
@@ -327,120 +238,12 @@ const View = () => {
           </div>
         </div>
 
-        <div
-          className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
-          aria-hidden="true"
-        >
-          <div
-            className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-          />
-        </div>
-        <div
-          className="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0 sm:transform-gpu"
-          aria-hidden="true"
-        >
-          <div
-            className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-          />
-        </div>
-        <div className="mx-auto px-6 lg:px-8">
-
-          <div className={`${animation}`}>
-            <div className="mx-auto flex justify-center items-center">
-              <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                {slides[currentSlide].title}
-              </h2>
-            </div>
-            {slides[currentSlide].messages.map((message, index) => (
-              <div key={index} className="mx-auto sm:flex justify-center items-center">
-                <div>
-                  <p className="mt-6 md:text-3xl text-xl leading-8 text-blue-300">
-                    {message}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-10 md:flex md:justify-center">
-            <dl className="mt-16 grid grid-cols-2 gap-8 md:gap-40 sm:mt-20 md:grid-cols-4">
-              {stats.map((stat, idx) => (
-                <div key={idx} className="flex flex-col-reverse">
-                  <dt className="text-base text-xl mt-5 leading-7 text-gray-300">{stat.name}</dt>
-                  <dd className="text-5xl leading-9 tracking-tight text-white">{stat.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
         <div className='flex justify-center items-center mt-10'>
-          <p className='text-blue-400 text-3xl font-bold ml-3'>{forthTitle}</p>
+          <p className='text-blue-400 text-3xl font-bold ml-3'>Search result is same as below</p>
         </div>
 
         <div className='md:p-40 md:pl-20 md:pt-0 md:grid grid-cols-4'>
-          <div className='md:col mr-5 mt-6 mr-0'>
-            <div className='flex justify-center itmes-center'>
-              <p className='text-gray-300 font-bold text-3xl'>Advanced Filtering</p>
-            </div>
-            <div className='p-10 pt-0 mt-3 rounded-md'>
-              <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByPopularity()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  by popularity
-                </button>
-              </div>
-              <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByAlphabet()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  by alphabeta
-                </button>
-              </div>
-              <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByVolume()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  by volume
-                </button>
-              </div>
-              <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByRecent()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  by recent
-                </button>
-              </div>
-            </div>
-
-            <div className='flex justify-center itmes-center mt-5'>
-              <p className='text-gray-300 font-bold text-3xl'>Past Achives</p>
-            </div>
-            <div className='p-10 pt-0 mt-3 rounded-md'>
-              <div className='flex justify-center itmes-center'>
-                <button className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  2023(35K+)
-                </button>
-              </div>
-              <div className='flex justify-center itmes-center'>
-                <button className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  2022(57K+)
-                </button>
-              </div>
-              <div className='flex justify-center itmes-center'>
-                <button className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  2021(23K+)
-                </button>
-              </div>
-              <div className='flex justify-center itmes-center'>
-                <button className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
-                  2020(45K+)
-                </button>
-              </div>
-            </div>
-
-          </div>
-          <div className="md:col-span-3">
+          <div className="md:col-span-4">
             <div className="py-6 ">
               <dd className="text-sm text-gray-900 ">
                 <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
@@ -456,10 +259,6 @@ const View = () => {
                             <div className="ml-4 flex min-w-0 flex-1 gap-2">
                               <span className="truncate font-medium text-gray-200 hover:text-gray-600" onClick={() => openfile(item.link)}>{item.name}</span>
                               <span className="flex-shrink-0 text-gray-400">{(item.size / (1024 * 1024)).toFixed(2)}Mb</span>
-                              {/* <span className="flex-shrink-0 text-gray-400">({item.updatedAt})</span> */}
-                              <span className="flex-shrink-0 text-blue-400">
-                                ({(new Date(item.updatedAt)).toLocaleDateString()})
-                              </span>
                             </div>
                           </div>
                           <div className="flex items-center justify-center ml-4 flex-shrink-0">

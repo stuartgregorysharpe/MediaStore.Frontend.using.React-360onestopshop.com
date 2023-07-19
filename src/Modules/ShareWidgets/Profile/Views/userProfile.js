@@ -145,8 +145,7 @@ const UserProfileView = () => {
             <div className="md:px-40 px-5 pb-20 pt-10">
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base font-bold font-semibold leading-4 text-xl text-gray-900">Profile</h2>
-                        <h2 className="text-base font-bold font-semibold leading-4 text-gray-900 pt-10">Profile info</h2>
+                        <h2 className="text-base font-bold font-semibold leading-4 text-xl text-gray-900">Profile info</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">
                             Update your photo and personal details here.
                         </p>

@@ -41,6 +41,7 @@ export const getMegaList = () => {
                 type: GET_MEGA_LIST_SUCCESS,
                 payload: response.data
             });
+            return response.data.data;
         } catch (error) {
             error.response ? toast.warn(error.response.data.message) : toast.error('Failed');
             dispatch({

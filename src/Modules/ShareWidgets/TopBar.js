@@ -13,14 +13,14 @@ import { googleLogout } from '@react-oauth/google';
 
 const navigation = [
     { name: 'Home', to: '/', current: false },
-    { name: 'About', to: '/about', current: false },
-    { name: 'Contact', to: '/contact', current: false },
-    { name: 'Subscribe', to: 'subscribe', current: false },
     { name: 'Audio', to: 'audio', current: false },
     { name: 'Video', to: 'video', current: false },
-    { name: 'Join Us', to: 'joinus', current: false },
-    { name: 'DMCA', to: 'dmca', current: false },
-    { name: 'Disclaimers', to: 'disclaimers', current: false },
+    { name: 'Subscribe', to: 'subscribe', current: false },
+    { name: 'About', to: '/about', current: false },
+    // { name: 'About', to: '/about', current: false },
+    // { name: 'Join Us', to: 'joinus', current: false },
+    // { name: 'DMCA', to: 'dmca', current: false },
+    // { name: 'Disclaimers', to: 'disclaimers', current: false },
 ]
 
 function classNames(...classes) {
