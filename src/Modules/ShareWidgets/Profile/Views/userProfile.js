@@ -56,7 +56,7 @@ const UserProfileView = () => {
 
         const image = $('#file-upload').prop('files')[0] ? $('#file-upload').prop('files')[0] : "";
 
-        if (_id && name && email && permission) {
+        if (_id && name && email && permission && timezone && country && bio) {
             const data = new FormData();
             data.append("_id", _id);
             data.append("name", name);

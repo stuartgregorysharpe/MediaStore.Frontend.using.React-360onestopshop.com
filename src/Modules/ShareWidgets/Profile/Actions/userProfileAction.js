@@ -5,7 +5,7 @@ const BaseUrl = "http://localhost:443/api"
 
 
 
-export const saveUserProfile = (payload) => {
+export const saveUserProfile = (payload, navigate) => {
 
     return async () => {
         try {
@@ -21,6 +21,7 @@ export const saveUserProfile = (payload) => {
             });
 
             toast.success('Successfully joined')
+            navigate("/");
         } catch (error) {
             error.response ? toast.warn(error.response.data.message) : toast.error('Login failed');
         }

@@ -56,9 +56,12 @@ export default function MegaNZView() {
     const megaList = useSelector(state => state.Mega.megaList);
 
     const importMega = async () => {
+        console.log("XXXX")
         if (url) {
+            console.log(url)
             const file = File.fromURL(url);
             await file.loadAttributes();
+            console.log(file, url)
             const fileExtensionIndex = file.name.lastIndexOf(".");
             const fileExtension = file.name.slice(fileExtensionIndex + 1);
             const justfilename = file.name.slice(0, fileExtensionIndex);
@@ -315,7 +318,7 @@ export default function MegaNZView() {
                                     <button
                                         type="button"
                                         onClick={addList}
-                                        className="ml-3 flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                        className="md:mr-20 ml-3 flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                                     >
                                         Add to my server
                                     </button>
@@ -323,14 +326,15 @@ export default function MegaNZView() {
                             </div>
                         </div>
                     </div>
-                    <div className="mt-5 md:flex">
-                        <div>
+                    {
+                        localStorage.getItem("meganame") && <div className="mt-5 md:flex">
                             <p className="text-gray-900">Recently imported details</p>
-                            <p className="text-indigo-400 flex"><ChevronDoubleRightIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />File: {localStorage.getItem("meganame")}</p>
-                            <p className="text-indigo-400 flex"><ChevronDoubleRightIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />{localStorage.getItem("megasize")}</p>
-                            <p className="text-indigo-400 flex"><ChevronDoubleRightIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />Type: {localStorage.getItem("megatype")}</p>
+                            <p className="text-indigo-400 flex"><ChevronDoubleRightIcon className="h-6 w-6 flex-shrink-0 text-gray-400" aria-hidden="true" />File: {localStorage.getItem("meganame")}</p>
+                            <p className="text-indigo-400 flex"><ChevronDoubleRightIcon className="h-6 w-6 flex-shrink-0 text-gray-400" aria-hidden="true" />{localStorage.getItem("megasize")}</p>
+                            <p className="text-indigo-400 flex"><ChevronDoubleRightIcon className="h-6 w-6 flex-shrink-0 text-gray-400" aria-hidden="true" />Type: {localStorage.getItem("megatype")}</p>
                         </div>
-                    </div>
+                    }
+
                     <div className="">
                         <div className="py-6 ">
                             <dd className="text-sm text-gray-900 ">
