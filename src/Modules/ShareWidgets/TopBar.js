@@ -13,9 +13,9 @@ import { googleLogout } from '@react-oauth/google';
 
 const navigation = [
     { name: 'Home', to: '/', current: false },
-    { name: 'Audio', to: 'audio', current: false },
-    { name: 'Video', to: 'video', current: false },
-    { name: 'Subscribe', to: 'subscribe', current: false },
+    { name: 'Audio', to: '/audio', current: false },
+    { name: 'Video', to: '/video', current: false },
+    { name: 'Subscribe', to: '/choose-plan', current: false },
     { name: 'About', to: '/about', current: false },
     // { name: 'About', to: '/about', current: false },
     // { name: 'Join Us', to: 'joinus', current: false },
@@ -56,7 +56,7 @@ export default function TopBar() {
     }, [])
 
     return (
-        <Disclosure as="nav" className="bg-purple-950">
+        <Disclosure as="nav" className="bg-indigo-950">
 
             {({ open }) => (
                 <>
@@ -105,7 +105,7 @@ export default function TopBar() {
                                 {!authState.success && <Menu as="div" className="relative ml-3">
                                     <div>
                                         <Menu.Button>
-                                            <Link to="/signin" className="bg-purple-800 hover:bg-red-400 text-white py-1.5 px-4 rounded-full">
+                                            <Link to="/signin" className="bg-indigo-800 hover:bg-red-400 text-white py-1.5 px-4 rounded-full">
                                                 MEMBER LOGIN
                                             </Link>
                                         </Menu.Button>
@@ -113,7 +113,7 @@ export default function TopBar() {
                                 </Menu>}
                                 {authState.success && <Menu as="div" className="relative ml-3">
                                     <div>
-                                        <Menu.Button className="flex rounded-full ring-4 ring-purple-950 bg-purple-800 text-sm focus:outline-none focus:ring-2 focus:ring-purle-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+                                        <Menu.Button className="flex rounded-full ring-2 ring-indigo-800 bg-indigo-800 text-sm focus:outline-none focus:ring-2 focus:ring-purle-500 focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 m-0.5 rounded-full"

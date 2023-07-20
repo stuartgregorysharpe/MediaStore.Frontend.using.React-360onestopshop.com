@@ -1,5 +1,6 @@
 import React from "react";
 import TopBar from "../../../ShareWidgets/TopBar";
+import Footer from "../../../ShareWidgets/Footer";
 import SiderBar from "../../../ShareWidgets/SiderBar";
 import { File } from 'megajs'
 import { useEffect } from "react";
@@ -30,6 +31,8 @@ export default function MegaNZView() {
     const [tpId, setTpId] = useState(null);
     const [editName, setEditName] = useState(null);
     const cancelButtonRef = useRef(null);
+    const [editPopularity, setEditPopularity] = useState(null);
+
     const itemsPerPage = 10;
 
     useEffect(() => {
@@ -127,7 +130,8 @@ export default function MegaNZView() {
     function megaitemeditSure() {
         const data = {
             id: tpId,
-            name: editName
+            name: editName,
+            popularity: editPopularity
         }
         dispatch(editMegaFile(data));
     }
@@ -137,7 +141,7 @@ export default function MegaNZView() {
         setEditOpen(true);
         const filter = currentItems?.find(item => item._id === id);
         setEditName(filter?.name);
-
+        setEditPopularity(filter?.popularity);
     }
 
     function deleteModal() {
@@ -245,13 +249,27 @@ export default function MegaNZView() {
                                                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                                                     Edit file name
                                                 </Dialog.Title>
-                                                <div className="mt-2">
+                                                <div className="mt-2 mb-2">
                                                     <input
                                                         type="text"
                                                         name="File"
                                                         value={editName}
                                                         onChange={(e) => { setEditName(e.target.value) }}
                                                         placeholder="File"
+                                                        required
+                                                        className="block w-full rounded-md border-0 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    />
+                                                </div>
+                                                <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                                    Edit file popularity
+                                                </Dialog.Title>
+                                                <div className="mt-2">
+                                                    <input
+                                                        type="number"
+                                                        name="Popularity"
+                                                        value={editPopularity}
+                                                        onChange={(e) => { setEditPopularity(e.target.value) }}
+                                                        placeholder="Popularity"
                                                         required
                                                         className="block w-full rounded-md border-0 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
@@ -425,6 +443,7 @@ export default function MegaNZView() {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
         </div>
     )

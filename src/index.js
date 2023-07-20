@@ -12,7 +12,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import { LOGIN_SUCCESS } from './Modules/Auth/Actions/Action';
 
-const BaseUrl = "http://localhost:443/api";
+const BaseUrl = "http://localhost:80/api";
 
 const InitApp = () => {
   const dispatch = useDispatch();

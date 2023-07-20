@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TopBar from "../ShareWidgets/TopBar";
+import Footer from "../ShareWidgets/Footer";
 import { PaperClipIcon, MusicalNoteIcon, VideoCameraIcon, ArrowDownTrayIcon, StarIcon, PencilSquareIcon, TrashIcon, ChevronDoubleRightIcon } from '@heroicons/react/20/solid'
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
@@ -242,11 +243,11 @@ const View = () => {
           <p className='text-blue-400 text-3xl font-bold ml-3'>Search result is same as below</p>
         </div>
 
-        <div className='md:p-40 md:pl-20 md:pt-0 md:grid grid-cols-4'>
+        <div className='md:p-40 md:pt-0 md:grid grid-cols-4'>
           <div className="md:col-span-4">
             <div className="py-6 ">
               <dd className="text-sm text-gray-900 ">
-                <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                <ul role="list" className="divide-y divide-gray-700 rounded-md">
 
                   {
                     currentItems?.map((item, idx) => {
@@ -316,7 +317,7 @@ const View = () => {
         </div>
 
       </div>
-
+      <Footer/>
     </div>
   );
 };

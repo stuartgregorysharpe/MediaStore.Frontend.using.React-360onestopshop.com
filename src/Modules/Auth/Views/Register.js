@@ -143,8 +143,9 @@ const RegisterView = () => {
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label htmlFor="comments" className="block px-2 text-sm font-medium leading-6 text-red-500">
-                    I accept the Terms and Privacy Policy
+                    I accept the 
                   </label>
+                  <Link to="/read-more" className='text-blue-600 hover:text-red-500'>Terms and Privacy Policy</Link>
                 </div>
               </div>
             </div>

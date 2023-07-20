@@ -10,6 +10,12 @@ import { CloudStorage } from "./Modules/Admin/CloudStorage/Views";
 import HomePageDetailView from "./Modules/Admin/HomePageDetail/HomePageDetailView"
 import SearchView from "./Modules/Search/SearchView"
 import FilterView from './Modules/Filtering/FilteringView'
+import AudioView from './Modules/Audio/AudioView'
+import VideoView from "./Modules/Video/VideoView"
+import AboutView from "./Modules/About/AboutView"
+import ReadMoreView from "./Modules/About/ReadMoreView"
+
+
 
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -35,13 +41,17 @@ const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<HomeView />} />
+      <Route path="/about" element={<AboutView />} />
       <Route path="/signin" element={<LoginView />} />
       <Route path="/signup" element={<RegisterView />} />
+      <Route path="/choose-plan" element={<ChoosePlanView />} />
+      <Route path="/read-more" element={<ReadMoreView />} />
       <Route path="/forgot-password" element={<ForgotPasswordView />} />
       <Route path="/profile" element={<AuthRoute><UserProfileView /></AuthRoute>} />
-      <Route path="/choose-plan" element={<AuthRoute><ChoosePlanView /></AuthRoute>} />
       <Route path="/search" element={<AuthRoute><SearchView /></AuthRoute>} />
       <Route path="/advanced-filter" element={<AuthRoute><FilterView /></AuthRoute>} />
+      <Route path="/audio" element={<AuthRoute><AudioView /></AuthRoute>} />
+      <Route path="/video" element={<AuthRoute><VideoView /></AuthRoute>} />
 
 
       {/* admin routers */}

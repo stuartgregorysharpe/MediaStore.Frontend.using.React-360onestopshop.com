@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import Modal from 'react-modal';
 import { getHome, searchaction } from '../Actions/HomeAction';
 import { searchAlphabeta, searchPopularity, searchRecent, searchVolume } from '../../Filtering/FilteringAction';
+import Footer from "../../ShareWidgets/Footer"
+import CountUp from 'react-countup';
 
 Modal.setAppElement('#root');
 
@@ -36,6 +38,8 @@ const View = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [search, setSearch] = useState(null);
+
+  const [content, setContent] = useState(null);
 
   const firstTitleOne = useSelector(state => state.Home.HomeList?.firstTitleOne);
   const secondTitleOne = useSelector(state => state.Home.HomeList?.secondTitleOne);
@@ -88,19 +92,14 @@ const View = () => {
   }, []);
 
 
-  // Initiate megaList with the value from the store
   const [megaList, setMegaList] = useState([]);
 
   useEffect(() => {
-    // Define an async function that will load the data
     const loadMegaList = async () => {
-      // Wait for the getMegaList action to finish and get the data
       const result = await dispatch(getMegaList());
 
-      // Now you can safely set the state
       setMegaList(result);
     };
-    // Invoke the function
     loadMegaList();
   }, [dispatch]); // Dependency array
 
@@ -188,9 +187,13 @@ const View = () => {
       setIsLoading(false);
     }
   };
+
   let Content;
 
   const openfile = async (link) => {
+
+    // setIsLoading(true);
+
     // const file = File.fromURL(link);
 
     // await file.loadAttributes();
@@ -203,31 +206,41 @@ const View = () => {
     // const blob = new Blob([data]);
     // const url = URL.createObjectURL(blob);
 
+    // setIsLoading(false);
+
     // setFileSrc(url);
     // setFileType(file.name.split('.').pop().toLowerCase());
     // setIsOpen(true);
-
-    // switch (fileType) {
-    //   case 'mp3':
-    //     Content = <audio controls src={fileSrc} />;
-    //     break;
-    //   case 'mp4':
-    //     Content = <video controls src={fileSrc} />;
-    //     break;
-    //   case 'pdf':
-    //     Content = <iframe title="pdf viewer" src={fileSrc} style={{ width: '100%', height: '100vh' }} />;
-    //     break;
-    //   case 'jpg':
-    //   case 'jpeg':
-    //   case 'png':
-    //   case 'gif':
-    //     Content = <img src={fileSrc} alt="Description" />;
-    //     break;
-    //   default:
-    //     Content = <p>Unsupported file type: {fileType}</p>;
-    // }
-
   }
+
+  // useEffect(() => {
+  //   let content;
+  //   switch (fileType) {
+  //     case 'mp3':
+  //       content = <audio className='flex justify-center items-center' style={{ width: 'auto', height: '100vh' }} controls src={fileSrc} />;
+  //       break;
+  //     case 'mp4':
+  //       content = <video className='flex justify-center items-center' style={{ width: 'auto', height: '100vh' }}  controls src={fileSrc} />;
+  //       break;
+  //     case 'pdf':
+  //       content = <iframe title="pdf viewer" src={fileSrc} style={{ width: '100%', height: '100vh' }} />;
+  //       break;
+  //     case 'jpg':
+  //     case 'jpeg':
+  //     case 'png':
+  //     case 'gif':
+  //       content = <img className='flex justify-center items-center' style={{ width: 'auto', height: '100vh' }}  src={fileSrc} alt="Description" />;
+  //       break;
+  //     default:
+  //       content = <p>Unsupported file type: {fileType}</p>;
+  //   }
+
+  //   setContent(content);
+  // }, [fileType, fileSrc]); // this useEffect will run whenever fileType or fileSrc change
+
+  // ... rest of your component
+
+
 
   const searchHandler = () => {
     // console.log(typeof (search))
@@ -273,7 +286,7 @@ const View = () => {
       {isLoading && (
         <div className="spinner-wrapper">
           <div className="spinner"></div>
-          <div className="loading-text">Please wait while downloading...</div>
+          <div className="loading-text">Please wait while loading...</div>
         </div>
       )}
 
@@ -283,7 +296,7 @@ const View = () => {
         contentLabel="File Viewer Modal"
         style={{ overlay: { zIndex: 1000 } }}
       >
-        {Content}
+        {content}
       </Modal>
 
       <div className="relative isolate overflow-hidden bg-gray-900 py-10 sm:py-10">
@@ -293,40 +306,6 @@ const View = () => {
         className="absolute
          inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
       /> */}
-        <div className='md:pr-80 md:pl-80 pl-5 pr-5 mb-20'>
-          <div className="relative flex">
-            <input
-              type="text"
-              name="search"
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') searchHandler() }}
-              className="block w-full rounded-full border-0 py-1.5 pl-7 pr-10 bg-gray-900 text-gray-400 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="Search"
-            />
-            <div className="bg-purple-800 rounded-full absolute inset-y-0 right-0 flex items-center pr-1.5 mt-1 mb-1 mr-1" onClick={()=>searchHandler()} >
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 19l-3.85-3.85"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
         <div
           className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
           aria-hidden="true"
@@ -350,6 +329,40 @@ const View = () => {
                 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
             }}
           />
+        </div>
+
+        <div className='md:pr-80 md:pl-80 pl-5 pr-5 mb-20'>
+          <div className="relative flex">
+            <input
+              type="text"
+              name="search"
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') searchHandler() }}
+              className="block w-full rounded-full border-0 py-1.5 pl-7 pr-10 bg-gray-900 text-gray-300 ring-1 ring-gray-500 placeholder:text-gray-500 focus:ring-gray-600 sm:text-sm sm:leading-6"
+              placeholder="Search"
+            />
+            <div className="bg-indigo-800 rounded-full absolute inset-y-0 right-0 flex items-center pr-1.5 mt-1 mb-1 mr-1" onClick={() => searchHandler()} >
+              <svg
+                className="w-5 h-5 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 19l-3.85-3.85"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
         <div className="mx-auto px-6 lg:px-8">
 
@@ -375,7 +388,9 @@ const View = () => {
               {stats.map((stat, idx) => (
                 <div key={idx} className="flex flex-col-reverse">
                   <dt className="text-base text-xl mt-5 leading-7 text-gray-300">{stat.name}</dt>
-                  <dd className="text-5xl leading-9 tracking-tight text-white">{stat.value}</dd>
+                  <dd className="text-5xl leading-9 tracking-tight text-white">
+                    <CountUp end={parseInt(stat.value)} duration={2.75} />+
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -392,22 +407,22 @@ const View = () => {
             </div>
             <div className='p-10 pt-0 mt-3 rounded-md'>
               <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByPopularity()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
+                <button onClick={() => filterByPopularity()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
                   by popularity
                 </button>
               </div>
               <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByAlphabet()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
+                <button onClick={() => filterByAlphabet()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
                   by alphabeta
                 </button>
               </div>
               <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByVolume()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
+                <button onClick={() => filterByVolume()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
                   by volume
                 </button>
               </div>
               <div className='flex justify-center itmes-center'>
-                <button onClick={()=>filterByRecent()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
+                <button onClick={() => filterByRecent()} className='text-blue-400 font-bold text-2xl border border-blue-900 rounded-full p-10 pt-0 pb-1 mt-5 hover:border-gray-300 hover:text-red-200'>
                   by recent
                 </button>
               </div>
@@ -443,7 +458,7 @@ const View = () => {
           <div className="md:col-span-3">
             <div className="py-6 ">
               <dd className="text-sm text-gray-900 ">
-                <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                <ul role="list" className="divide-y divide-gray-700 rounded-md">
 
                   {
                     currentItems?.map((item, idx) => {
@@ -517,7 +532,7 @@ const View = () => {
         </div>
 
       </div>
-
+      <Footer />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../../ShareWidgets/SiderBar";
 import TopBar from "../../ShareWidgets/TopBar";
+import Footer from "../../ShareWidgets/Footer";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getHome } from "../../Home/Actions/HomeAction";
@@ -441,6 +442,7 @@ export default function HomePageDetailView() {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
         </div>
     );

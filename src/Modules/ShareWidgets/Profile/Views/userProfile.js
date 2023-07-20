@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import IconMan from '../../../../Assets/Icons/man.png'
 import TopBar from "../../TopBar";
+import Footer from "../../Footer";
 import { saveUserProfile } from "../Actions/userProfileAction";
 
 
@@ -319,6 +320,7 @@ const UserProfileView = () => {
                     </button>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 
