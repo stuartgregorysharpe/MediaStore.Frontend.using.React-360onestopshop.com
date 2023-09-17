@@ -16,9 +16,13 @@ https://360onestopshop.com
 
 # 🌟 Features
 Diverse Catalog: Choose from a wide range of media items - from movies, music, books, to digital art.
+
 User Profiles: Register and manage your personalized media collections.
+
 Secure Payments: Intuitive and secure payment process.
+
 Responsive Design: Enjoy a seamless shopping experience on desktops, tablets, and mobiles.
+
 Recommendations: Get personalized recommendations based on your browsing and purchase history.
 
 # 🚀 Development Setup
