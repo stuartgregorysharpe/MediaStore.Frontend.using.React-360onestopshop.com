@@ -14,6 +14,13 @@ https://360onestopshop.com
 
 # Here is the Backend: https://github.com/stuartgregorysharpe/MediaStore.Backend.using.Node-360onestopshop.com
 
+
+## Youtube Video Associated with My Working
+
+[![Watch the video on YouTube](https://img.youtu.be/vi/bUZ-tv7odZU/maxresdefault.jpg)](https://youtu.be/bUZ-tv7odZU)
+
+
+
 # 🌟 Features
 Diverse Catalog: Choose from a wide range of media items - from movies, music, books, to digital art.
 
