@@ -17,8 +17,7 @@ https://360onestopshop.com
 
 ## Youtube Video Associated with My Working
 
-[![Watch the video on YouTube](https://img.youtu.be/vi/bUZ-tv7odZU/maxresdefault.jpg)](https://youtu.be/bUZ-tv7odZU)
-
+[![Watch the video on YouTube](https://img.youtube.com/vi/bUZ-tv7odZU/maxresdefault.jpg)](https://youtu.be/bUZ-tv7odZU)
 
 
 # 🌟 Features
