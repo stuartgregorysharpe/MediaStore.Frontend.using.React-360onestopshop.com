@@ -1,6 +1,11 @@
 # 360 One Stop Shop - Media Store
 Welcome to the official repository for 360 One Stop Shop, your ultimate destination for a variety of media content. Built with React, our platform aims to provide users with a seamless and enjoyable media shopping experience.
 
+## Youtube Video Associated with My Working
+
+[![Watch the video on YouTube](https://img.youtube.com/vi/bUZ-tv7odZU/maxresdefault.jpg)](https://youtu.be/bUZ-tv7odZU)
+
+
 # Website Screenshot
 
 https://360onestopshop.com
@@ -13,11 +18,6 @@ https://360onestopshop.com
 
 
 # Here is the Backend: https://github.com/stuartgregorysharpe/MediaStore.Backend.using.Node-360onestopshop.com
-
-
-## Youtube Video Associated with My Working
-
-[![Watch the video on YouTube](https://img.youtube.com/vi/bUZ-tv7odZU/maxresdefault.jpg)](https://youtu.be/bUZ-tv7odZU)
 
 
 # 🌟 Features
